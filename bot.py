@@ -99,10 +99,14 @@ async def forward_story_to_chat(application, message):
         )
         print(f"[OK] Сообщение успешно переслано")
     except Exception as e:
-        print(f"[ERROR] Не удалось переслать в чат {CHAT_ID}: {e}")
-        print(f"[ERROR] Тип ошибки: {type(e).__name__}")
-        import traceback
-        traceback.print_exc()
+        # Игнорируем ошибки пересылки, чтобы не прерывать работу бота
+        error_type = type(e).__name__
+        if error_type == 'BadRequest':
+            print(f"[WARN] Не удалось переслать сообщение (возможно, сообщение недоступно): {e}")
+        else:
+            print(f"[ERROR] Не удалось переслать в чат {CHAT_ID}: {e}")
+            print(f"[ERROR] Тип ошибки: {error_type}")
+        # Не прерываем выполнение - бот продолжает работать
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
