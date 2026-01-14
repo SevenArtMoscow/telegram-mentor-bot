@@ -1,0 +1,17 @@
+[Unit]
+Description=Telegram Bot для сбора историй о наставниках
+After=network.target
+
+[Service]
+Type=simple
+User=botuser
+WorkingDirectory=/home/botuser/telegram-bot
+Environment="PATH=/home/botuser/telegram-bot/venv/bin"
+ExecStart=/home/botuser/telegram-bot/venv/bin/python /home/botuser/telegram-bot/bot.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
